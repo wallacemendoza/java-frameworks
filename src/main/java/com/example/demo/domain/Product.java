@@ -9,27 +9,28 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-/**
- *
- *
- *
- *
- */
 @Entity
-@Table(name="Products")
+@Table(name = "Products")
 @ValidProductPrice
 @ValidEnufParts
 public class Product implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    long id;
-    String name;
+    private long id;
+
+    private String name;
+
     @Min(value = 0, message = "Price value must be positive")
-    double price;
+    private double price;
+
     @Min(value = 0, message = "Inventory value must be positive")
-    int inv;
-    @ManyToMany(cascade=CascadeType.ALL, mappedBy = "products")
-    Set<Part> parts= new HashSet<>();
+    private int inv;
+
+    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "products")
+    private Set<Part> parts = new HashSet<>();
+
+    // ----- Constructors -----
 
     public Product() {
     }
@@ -46,6 +47,8 @@ public class Product implements Serializable {
         this.price = price;
         this.inv = inv;
     }
+
+    // ----- Getters & Setters -----
 
     public long getId() {
         return id;
@@ -87,16 +90,25 @@ public class Product implements Serializable {
         this.parts = parts;
     }
 
-    public String toString(){
+    // ----- New Method: Required by Controller -----
+
+    public void addPart(Part part) {
+        this.parts.add(part);
+    }
+
+    // ----- Utility Methods -----
+
+    @Override
+    public String toString() {
         return this.name;
     }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
         Product product = (Product) o;
-
         return id == product.id;
     }
 
