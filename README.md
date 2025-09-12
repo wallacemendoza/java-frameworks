@@ -12,10 +12,23 @@
 ## Task A – Git Setup
 - Project cloned into IntelliJ IDEA Ultimate (student license).
 - Work completed on `working` branch.
-- Commits made after each task with clear messages (see branch history below).
+- Commits made after each task with clear messages.
 
-**Branch History:**  
-Paste your `git log --oneline --decorate --graph --all` output here (you already captured it).
+**Branch History (from `git log --oneline --decorate --graph --all`):**
+```bash
+* 072c428 (HEAD -> working) Task E: Added sample inventory (5 PC parts, 1 product) for Custom PC Store
+* 88c14aa Task E: Added sample inventory (5 PC parts, 1 product) for Custom PC Store
+* 3081b97 (origin/working) mainscreen update
+* a19c7d4 mainscreen update
+* 37c1ba2 Corrected mispelling
+| * 2d707a7 (origin/kevin.franke-main-patch-26898) Edit typo "proejct" in README.md
+| * c7f219c (origin/main, origin/HEAD, main) Corrected mispelling
+|/  
+*   41e0796 Updated AddProductController
+|\  
+| * 1853582 Updated AddProductController
+|/  
+
 
 ---
 
@@ -25,43 +38,40 @@ Paste your `git log --oneline --decorate --graph --all` output here (you already
 - **File:** `mainscreen.html` (src/main/resources/templates/)
 - **Line 6:** Updated shop name → `Elite Custom PC Builders – Inventory Management`.
 - **Line 65:** Updated section header → `Custom PC Builds`.
-- **All part/product names automatically displayed from DB.**
+- All part/product names automatically displayed from DB.
 
 ### Task D – Add “About” Page
-- **File:** `about.html` (src/main/resources/templates/)
-- Added shop description + navigation link back to `mainscreen`.
+- **File:** `about.html` (src/main/resources/templates/) → Added shop description + navigation link back to `mainscreen`.
 - **File:** `mainscreen.html` (line 11) → Added navigation link `<a th:href="@{/about}">About Us</a>`.
 
 ### Task E – Add Sample Inventory
-- **File:** `DemoApplication.java` (src/main/java/com/example/demo/)
-- Added Bootstrap code to insert 5 sample parts + 1 sample product **only if DB is empty**.
+- **File:** `DemoApplication.java` (src/main/java/com/example/demo/)  
+  Added bootstrap logic to insert 5 sample parts + 1 sample product **only if DB is empty**.
 
 ### Task F – Add “Buy Now” Button
 - **File:** `mainscreen.html` (line 112) → Added `<form>` with hidden productID and “Buy Now” button.
 - **File:** `AddProductController.java` (lines ~90–110) → Added `@PostMapping("/buyproduct")` to decrement inventory by 1 and show success/failure message.
 
 ### Task G – Add Min/Max Inventory to Parts
-- **File:** `Part.java` (src/main/java/com/example/demo/domain/)
-    - Lines 34–43 → Added `minInv` and `maxInv` fields with `@Min` validation.
-- **File:** `InhousePartForm.html` & `OutsourcedPartForm.html`
-    - Added new fields for `minInv` and `maxInv`.
-- **File:** `application.properties`
-    - Changed DB file name → `spring.datasource.url=jdbc:h2:file:~/spring-boot-h2-db102`.
+- **File:** `Part.java` (src/main/java/com/example/demo/domain/) → Added `minInv` and `maxInv` fields with `@Min` validation.
+- **Files:** `InhousePartForm.html` & `OutsourcedPartForm.html` → Added new fields for `minInv` and `maxInv`.
+- **File:** `application.properties` → Changed DB file name to `spring.datasource.url=jdbc:h2:file:~/spring-boot-h2-db102`.
 
 ### Task H – Add Validation
-- **File:** `ValidInventory.java` + `InventoryValidator.java` (src/main/java/com/example/demo/validators/)
-    - Enforces that `inv` is between `minInv` and `maxInv`.
-- **File:** `InhousePartForm.html` & `OutsourcedPartForm.html`
-    - Added `<div class="text-danger" th:if="...">` to display error messages.
-- **File:** `Product.java` (validators `@ValidProductPrice` and `@ValidEnufParts` already applied).
+- **Files:** `ValidInventory.java` + `InventoryValidator.java` (src/main/java/com/example/demo/validators/)  
+  Enforces that `inv` is between `minInv` and `maxInv`.
+- **Files:** `InhousePartForm.html` & `OutsourcedPartForm.html` → Added `<div class="text-danger" th:if="...">` to display error messages.
+- **File:** `Product.java` → Validators `@ValidProductPrice` and `@ValidEnufParts` already applied.
 
 ### Task I – Add Unit Tests
-- **File:** `PartTest.java` (src/test/java/com/example/demo/domain/)
-    - Added tests for min/max inventory validation.
-    - **New Tests:** `testMinMaxInventoryValid()` and `testMinMaxInventoryInvalid()`.
+- **File:** `PartTest.java` (src/test/java/com/example/demo/domain/)  
+  Added tests for min/max inventory validation:  
+  - `testMinMaxInventoryValid()`  
+  - `testMinMaxInventoryInvalid()`
 
 ### Task J – Remove Unused Validators
-- Removed any old/unused validator classes (only `ValidDeletePart`, `ValidInventory`, `ValidProductPrice`, and `ValidEnufParts` remain).
+- Removed any old/unused validator classes.  
+- Only `ValidDeletePart`, `ValidInventory`, `ValidProductPrice`, and `ValidEnufParts` remain.
 
 ---
 
@@ -79,5 +89,3 @@ This README is written clearly with details for each change. All commit messages
 - **I:** Unit test run in IntelliJ (green check marks).
 
 ---
-
-## Branch History Example (from `git log`)  
