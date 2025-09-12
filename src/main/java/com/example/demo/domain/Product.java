@@ -11,8 +11,8 @@ import java.util.Set;
 
 @Entity
 @Table(name = "Products")
-@ValidProductPrice
-@ValidEnufParts
+@ValidProductPrice   // ✅ Custom validator: price >= sum(parts)
+@ValidEnufParts      // ✅ Custom validator: must have enough parts
 public class Product implements Serializable {
 
     @Id
@@ -31,9 +31,7 @@ public class Product implements Serializable {
     private Set<Part> parts = new HashSet<>();
 
     // ----- Constructors -----
-
-    public Product() {
-    }
+    public Product() {}
 
     public Product(String name, double price, int inv) {
         this.name = name;
@@ -49,71 +47,36 @@ public class Product implements Serializable {
     }
 
     // ----- Getters & Setters -----
+    public long getId() { return id; }
+    public void setId(long id) { this.id = id; }
 
-    public long getId() {
-        return id;
-    }
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
 
-    public void setId(long id) {
-        this.id = id;
-    }
+    public double getPrice() { return price; }
+    public void setPrice(double price) { this.price = price; }
 
-    public String getName() {
-        return name;
-    }
+    public int getInv() { return inv; }
+    public void setInv(int inv) { this.inv = inv; }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    public Set<Part> getParts() { return parts; }
+    public void setParts(Set<Part> parts) { this.parts = parts; }
 
-    public double getPrice() {
-        return price;
-    }
+    // ----- New Method -----
+    public void addPart(Part part) { this.parts.add(part); }
 
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
-    public int getInv() {
-        return inv;
-    }
-
-    public void setInv(int inv) {
-        this.inv = inv;
-    }
-
-    public Set<Part> getParts() {
-        return parts;
-    }
-
-    public void setParts(Set<Part> parts) {
-        this.parts = parts;
-    }
-
-    // ----- New Method: Required by Controller -----
-
-    public void addPart(Part part) {
-        this.parts.add(part);
-    }
-
-    // ----- Utility Methods -----
-
+    // ----- Utility -----
     @Override
-    public String toString() {
-        return this.name;
-    }
+    public String toString() { return this.name; }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
+        if (!(o instanceof Product)) return false;
         Product product = (Product) o;
         return id == product.id;
     }
 
     @Override
-    public int hashCode() {
-        return (int) (id ^ (id >>> 32));
-    }
+    public int hashCode() { return (int) (id ^ (id >>> 32)); }
 }

@@ -2,22 +2,14 @@ package com.example.demo.validators;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.lang.annotation.*;
 
-/**
- *
- *
- *
- *
- */
-@Constraint(validatedBy = {PriceProductValidator.class})
+@Documented
+@Constraint(validatedBy = PriceProductValidator.class)
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ValidProductPrice {
-    String message() default "Price of the product must be greater than the sum of the price of the parts.";
-    Class<?> [] groups() default {};
-    Class<? extends Payload> [] payload() default {};
+    String message() default "Price of the product must be greater than or equal to the sum of its parts.";
+    Class<?>[] groups() default {};
+    Class<? extends Payload>[] payload() default {};
 }

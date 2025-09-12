@@ -2,67 +2,49 @@ package com.example.demo.controllers;
 
 import com.example.demo.domain.InhousePart;
 import com.example.demo.domain.OutsourcedPart;
-import com.example.demo.domain.Part;
-import com.example.demo.repositories.PartRepository;
-import com.example.demo.service.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
+import com.example.demo.service.PartService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 
-import javax.validation.Valid;
-import java.util.List;
-
-/**
- *
- *
- *
- *
- */
 @Controller
 public class AddPartController {
-    @Autowired
-    private ApplicationContext context;
 
-    @GetMapping("/showPartFormForUpdate")
-    public String showPartFormForUpdate(@RequestParam("partID") int theId,Model theModel){
+    private final PartService partService;
 
-        PartService repo=context.getBean(PartServiceImpl.class);
-        OutsourcedPartService outsourcedrepo=context.getBean(OutsourcedPartServiceImpl.class);
-        InhousePartService inhouserepo=context.getBean(InhousePartServiceImpl.class);
-
-        boolean inhouse=true;
-        List<OutsourcedPart> outsourcedParts=outsourcedrepo.findAll();
-        for(OutsourcedPart outsourcedPart:outsourcedParts) {
-            if(outsourcedPart.getId()==theId)inhouse=false;
-        }
-        String formtype;
-        if(inhouse){
-            InhousePart inhousePart=inhouserepo.findById(theId);
-            theModel.addAttribute("inhousepart",inhousePart);
-            formtype="InhousePartForm";
-        }
-        else{
-            OutsourcedPart outsourcedPart=outsourcedrepo.findById(theId);
-            theModel.addAttribute("outsourcedpart",outsourcedPart);
-            formtype="OutsourcedPartForm";
-        }
-        return formtype;
+    public AddPartController(PartService partService) {
+        this.partService = partService;
     }
 
-    @GetMapping("/deletepart")
-    public String deletePart(@Valid @RequestParam("partID") int theId,  Model theModel){
-        PartService repo = context.getBean(PartServiceImpl.class);
-        Part part=repo.findById(theId);
-        if(part.getProducts().isEmpty()){
-            repo.deleteById(theId);
-            return "confirmationdeletepart";
-        }
-        else{
-            return "negativeerror";
-        }
+    // ✅ Show Inhouse form
+    @GetMapping("/showFormForAddInhousePart")
+    public String showFormForAddInhousePart(Model model) {
+        model.addAttribute("inhousePart", new InhousePart());
+        model.addAttribute("title", "Add Inhouse Component");
+        return "InhousePartForm";
     }
 
+    // ✅ Save Inhouse part
+    @PostMapping("/saveInhousePart")
+    public String saveInhousePart(@ModelAttribute("inhousePart") InhousePart inhousePart) {
+        partService.save(inhousePart);
+        return "redirect:/mainscreen";
+    }
+
+    // ✅ Show Outsourced form
+    @GetMapping("/showFormForAddOutsourcedPart")
+    public String showFormForAddOutsourcedPart(Model model) {
+        model.addAttribute("outsourcedPart", new OutsourcedPart());
+        model.addAttribute("title", "Add Outsourced Component");
+        return "OutsourcedPartForm";
+    }
+
+    // ✅ Save Outsourced part
+    @PostMapping("/saveOutsourcedPart")
+    public String saveOutsourcedPart(@ModelAttribute("outsourcedPart") OutsourcedPart outsourcedPart) {
+        partService.save(outsourcedPart);
+        return "redirect:/mainscreen";
+    }
 }
