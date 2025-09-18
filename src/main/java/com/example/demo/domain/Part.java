@@ -7,11 +7,12 @@ import javax.persistence.*;
 import javax.validation.constraints.Min;
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
 @ValidDeletePart
-@ValidInventory   // ✅ Apply custom validation for inventory
+@ValidInventory   // ✅ Enforce min/max/inv validation
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "part_type", discriminatorType = DiscriminatorType.INTEGER)
 @Table(name = "Parts")
@@ -23,29 +24,25 @@ public abstract class Part implements Serializable {
 
     private String name;
 
-    @Min(value = 0, message = "Price value must be positive")
+    @Min(value = 0, message = "Price must be 0 or greater.")
     private double price;
 
-    @Min(value = 0, message = "Inventory value must be positive")
-    private int inv;
+    @Min(value = 0, message = "Inventory must be 0 or greater.")
+    private Integer inv;
 
-    @Min(value = 0, message = "Minimum inventory must be positive")
+    @Min(value = 0, message = "Minimum inventory must be 0 or greater.")
     private Integer minInv;
 
-    @Min(value = 0, message = "Maximum inventory must be positive")
+    @Min(value = 0, message = "Maximum inventory must be 0 or greater.")
     private Integer maxInv;
 
-    @ManyToMany
-    @JoinTable(
-            name = "product_part",
-            joinColumns = @JoinColumn(name = "part_id"),
-            inverseJoinColumns = @JoinColumn(name = "product_id"))
+    @ManyToMany(mappedBy = "parts", fetch = FetchType.EAGER) // ✅ eager avoids LazyInitializationException
     private Set<Product> products = new HashSet<>();
 
     // ----- Constructors -----
     public Part() {}
 
-    public Part(String name, double price, int inv, Integer minInv, Integer maxInv) {
+    public Part(String name, double price, Integer inv, Integer minInv, Integer maxInv) {
         this.name = name;
         this.price = price;
         this.inv = inv;
@@ -53,7 +50,7 @@ public abstract class Part implements Serializable {
         this.maxInv = maxInv;
     }
 
-    public Part(long id, String name, double price, int inv, Integer minInv, Integer maxInv) {
+    public Part(long id, String name, double price, Integer inv, Integer minInv, Integer maxInv) {
         this.id = id;
         this.name = name;
         this.price = price;
@@ -72,8 +69,8 @@ public abstract class Part implements Serializable {
     public double getPrice() { return price; }
     public void setPrice(double price) { this.price = price; }
 
-    public int getInv() { return inv; }
-    public void setInv(int inv) { this.inv = inv; }
+    public Integer getInv() { return inv; }
+    public void setInv(Integer inv) { this.inv = inv; }
 
     public Integer getMinInv() { return minInv; }
     public void setMinInv(Integer minInv) { this.minInv = minInv; }
@@ -86,7 +83,9 @@ public abstract class Part implements Serializable {
 
     // ----- Utility Methods -----
     @Override
-    public String toString() { return this.name; }
+    public String toString() {
+        return this.name; // ✅ matches test expectation
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -97,5 +96,7 @@ public abstract class Part implements Serializable {
     }
 
     @Override
-    public int hashCode() { return (int) (id ^ (id >>> 32)); }
+    public int hashCode() {
+        return Objects.hash(id); // ✅ matches test expectation
+    }
 }

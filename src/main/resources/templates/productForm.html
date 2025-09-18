@@ -1,42 +1,59 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title th:text="${title}">Add / Update Product</title>
-    <!-- keep your project’s look; if you already include Bootstrap elsewhere, this won’t conflict -->
+    <title>Elite Custom PC Builders – Add / Update Product</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body class="container mt-4">
+
+<header class="text-center mb-4">
+    <h1 class="fw-bold text-primary">Elite Custom PC Builders</h1>
+    <p class="lead">Create or Update Custom Gaming PC Builds</p>
+</header>
 
 <h2 th:text="${title}">Add PC Build</h2>
 
 <form th:action="@{/saveProduct}" th:object="${product}" method="post">
 
-    <!-- hidden id (for updates) -->
+    <!-- 🔹 Show global validation messages -->
+    <div class="alert alert-danger" th:if="${#fields.hasGlobalErrors()}">
+        <p th:each="err : ${#fields.globalErrors()}" th:text="${err}"></p>
+    </div>
+
     <input type="hidden" th:field="*{id}"/>
 
-    <!-- Build Name -->
     <div class="mb-3">
         <label for="name" class="form-label">Build Name</label>
-        <input id="name" type="text" th:field="*{name}" class="form-control" placeholder="Enter build name">
+        <input id="name" type="text" th:field="*{name}" class="form-control" placeholder="Enter build name" required>
+        <div class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
     </div>
 
-    <!-- Price -->
     <div class="mb-3">
-        <label for="price" class="form-label">Price</label>
-        <input id="price" type="number" step="0.01" th:field="*{price}" class="form-control" placeholder="Enter price">
+        <label for="price" class="form-label">Price ($)</label>
+        <input id="price" type="number" step="0.01" th:field="*{price}" class="form-control" placeholder="Enter price" required>
+        <div class="text-danger" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></div>
     </div>
 
-    <!-- Inventory -->
     <div class="mb-3">
         <label for="inv" class="form-label">Inventory</label>
-        <input id="inv" type="number" th:field="*{inv}" class="form-control" placeholder="Enter inventory">
+        <input id="inv" type="number" th:field="*{inv}" class="form-control" placeholder="Enter inventory" required>
+        <div class="text-danger" th:if="${#fields.hasErrors('inv')}" th:errors="*{inv}"></div>
     </div>
 
-    <!-- Select Parts (checkboxes) -->
     <div class="mb-3">
-        <label class="form-label">Select Parts</label>
+        <label for="minInv" class="form-label">Minimum Inventory</label>
+        <input id="minInv" type="number" th:field="*{minInv}" class="form-control" placeholder="Enter minimum inventory" required>
+        <div class="text-danger" th:if="${#fields.hasErrors('minInv')}" th:errors="*{minInv}"></div>
+    </div>
 
-        <!-- show nothing fancy if no parts exist -->
+    <div class="mb-3">
+        <label for="maxInv" class="form-label">Maximum Inventory</label>
+        <input id="maxInv" type="number" th:field="*{maxInv}" class="form-control" placeholder="Enter maximum inventory" required>
+        <div class="text-danger" th:if="${#fields.hasErrors('maxInv')}" th:errors="*{maxInv}"></div>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Select Parts for this Build</label>
         <p class="text-muted" th:if="${#lists.isEmpty(allParts)}">No parts available. Add components first.</p>
 
         <div th:each="part : ${allParts}" class="form-check" th:unless="${#lists.isEmpty(allParts)}">
@@ -44,10 +61,10 @@
                    type="checkbox"
                    name="selectedParts"
                    th:value="${part.id}"
-                   th:checked="${product != null and product.parts != null and product.parts.contains(part)}">
+                   th:checked="${product.parts != null and product.parts.contains(part)}">
             <label class="form-check-label">
                 <span th:text="${part.name}"></span>
-                <span th:text="' ($' + part.price + ') - Inv: ' + part.inv"></span>
+                <span th:text="| ($${#numbers.formatDecimal(part.price,1,'COMMA',2,'POINT')}) - Inv: ${part.inv}|"></span>
             </label>
         </div>
     </div>

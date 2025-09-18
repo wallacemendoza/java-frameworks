@@ -1,20 +1,32 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>About - Elite Custom PC Builders</title>
-    <link rel="stylesheet" th:href="@{/css/style.css}" />
+    <title>About – Elite Custom PC Builders</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body>
-<h1>About Elite Custom PC Builders</h1>
-<p>
-    Welcome to Elite Custom PC Builders! We specialize in high-performance custom-built gaming computers tailored to your specific needs.
-    Each PC build is assembled using premium components including the latest CPUs, GPUs, RAM, SSDs, and more.
-</p>
+<body class="container mt-4">
 
-<p>
-    Whether you're a professional streamer, gamer, or power user, we have the parts and expertise to build your ultimate machine.
-</p>
+<header class="text-center mb-4">
+    <h1 class="fw-bold text-primary">Elite Custom PC Builders</h1>
+    <p class="lead">Your Partner in High-Performance Custom PCs</p>
+</header>
 
-<a th:href="@{/mainscreen}">← Back to Inventory</a>
+<section>
+    <p>
+        Welcome to <strong>Elite Custom PC Builders</strong>!
+        We specialize in high-performance gaming and workstation builds,
+        tailored to your needs with the latest CPUs, GPUs, RAM, SSDs, and more.
+    </p>
+
+    <p>
+        Whether you're a professional streamer, gamer, or creative professional,
+        we use premium parts and expert craftsmanship to deliver the ultimate custom machine.
+    </p>
+</section>
+
+<div class="mt-4">
+    <a th:href="@{/mainscreen}" class="btn btn-secondary">← Back to Inventory</a>
+</div>
+
 </body>
 </html>

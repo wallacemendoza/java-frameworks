@@ -6,8 +6,10 @@ import com.example.demo.service.PartService;
 import com.example.demo.service.ProductService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -23,27 +25,35 @@ public class AddProductController {
         this.partService = partService;
     }
 
-    // Show Add Product form
+    // ✅ Show Add Product form
     @GetMapping("/showFormForAddProduct")
     public String showFormForAddProduct(Model model) {
-        model.addAttribute("product", new Product());
-        // If your PartService doesn't have findAll(), use: partService.listAll(null)
+        Product product = new Product();
+        product.setParts(new HashSet<>());
+        model.addAttribute("product", product);
         model.addAttribute("allParts", partService.findAll());
         model.addAttribute("title", "Add PC Build");
         return "productForm";
     }
 
-    // Save Product (Add + Update)
+    // ✅ Save Product (Add + Update) with validation
     @PostMapping("/saveProduct")
     public String saveProduct(
-            @ModelAttribute("product") Product product,
-            @RequestParam(value = "selectedParts", required = false) List<Long> selectedParts
+            @Valid @ModelAttribute("product") Product product,
+            BindingResult result,
+            @RequestParam(value = "selectedParts", required = false) List<Long> selectedParts,
+            Model model
     ) {
+        if (result.hasErrors()) {
+            model.addAttribute("allParts", partService.findAll());
+            model.addAttribute("title", (product.getId() == 0 ? "Add PC Build" : "Update PC Build"));
+            return "productForm";
+        }
+
         Set<Part> parts = new HashSet<>();
         if (selectedParts != null) {
             for (Long partId : selectedParts) {
-                int idAsInt = Math.toIntExact(partId); // convert Long -> int for your service
-                Part p = partService.findById(idAsInt);
+                Part p = partService.findById(Math.toIntExact(partId));
                 if (p != null) {
                     parts.add(p);
                 }
@@ -51,20 +61,29 @@ public class AddProductController {
         }
         product.setParts(parts);
         productService.save(product);
+
         return "redirect:/mainscreen";
     }
 
-    // Show Update Product form
+    // ✅ Show Update Product form
     @GetMapping("/showFormForUpdateProduct/{id}")
     public String showFormForUpdateProduct(@PathVariable("id") long id, Model model) {
         Product product = productService.findById((int) id);
+
+        if (product == null) {
+            return "redirect:/mainscreen";
+        }
+        if (product.getParts() == null) {
+            product.setParts(new HashSet<>());
+        }
+
         model.addAttribute("product", product);
-        model.addAttribute("allParts", partService.findAll()); // or listAll(null)
+        model.addAttribute("allParts", partService.findAll());
         model.addAttribute("title", "Update PC Build");
         return "productForm";
     }
 
-    // Delete Product
+    // ✅ Delete Product
     @GetMapping("/deleteProduct/{id}")
     public String deleteProduct(@PathVariable("id") long id) {
         productService.deleteById((int) id);

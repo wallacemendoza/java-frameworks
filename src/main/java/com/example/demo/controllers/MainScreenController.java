@@ -33,6 +33,12 @@ public class MainScreenController {
         return "mainscreen";
     }
 
+    // ✅ Show the About Us page
+    @GetMapping("/about")
+    public String aboutPage() {
+        return "about";  // Loads about.html from templates folder
+    }
+
     // ⚠️ Removed duplicate /showFormForAddProduct mapping
     // That route is now ONLY in AddProductController
 }

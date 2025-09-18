@@ -6,16 +6,20 @@
 </head>
 <body class="container mt-4">
 
-<h1>Elite Custom PC Builders – Inventory Management</h1>
-
-<a th:href="@{/about}">About Us</a>
+<!-- ===== Header / Branding ===== -->
+<header class="text-center mb-4">
+    <h1 class="fw-bold text-primary">Elite Custom PC Builders</h1>
+    <p class="lead">Premium Components • Custom Gaming Builds • Performance Guaranteed</p>
+    <a th:href="@{/about}" class="btn btn-outline-info btn-sm">About Us</a>
+</header>
 
 <!-- ================= Components Section ================= -->
-<h2 class="mt-4">Components</h2>
+<h2 class="mt-4 text-success">Available Components</h2>
+<p class="text-muted">These are the individual PC parts (CPU, GPU, RAM, SSD, etc.) currently in inventory.</p>
 
 <form th:action="@{/mainscreen}" method="get" class="row g-2 mb-3">
     <div class="col-auto">
-        <input type="text" class="form-control" placeholder="Filter components..." name="partkeyword" th:value="${partkeyword}">
+        <input type="text" class="form-control" placeholder="Search components..." name="partkeyword" th:value="${partkeyword}">
     </div>
     <div class="col-auto">
         <button type="submit" class="btn btn-primary">Search</button>
@@ -23,14 +27,14 @@
     </div>
 </form>
 
-<a class="btn btn-primary mb-3" th:href="@{/showFormForAddInhousePart}">Add Inhouse Component</a>
-<a class="btn btn-primary mb-3" th:href="@{/showFormForAddOutsourcedPart}">Add Outsourced Component</a>
+<a class="btn btn-success mb-3" th:href="@{/showFormForAddInhousePart}">+ Add Inhouse Component</a>
+<a class="btn btn-warning mb-3" th:href="@{/showFormForAddOutsourcedPart}">+ Add Outsourced Component</a>
 
-<table class="table table-bordered">
-    <thead>
+<table class="table table-striped table-hover">
+    <thead class="table-dark">
     <tr>
         <th>Component Name</th>
-        <th>Price</th>
+        <th>Price ($)</th>
         <th>Inventory</th>
         <th>Action</th>
     </tr>
@@ -38,7 +42,7 @@
     <tbody>
     <tr th:each="part : ${parts}">
         <td th:text="${part.name}"></td>
-        <td th:text="${part.price}"></td>
+        <td th:text="${#numbers.formatDecimal(part.price, 1, 'COMMA', 2, 'POINT')}"></td>
         <td th:text="${part.inv}"></td>
         <td>
             <a th:href="@{'/showFormForUpdatePart/' + ${part.id}}" class="btn btn-sm btn-primary">Update</a>
@@ -49,11 +53,12 @@
 </table>
 
 <!-- ================= Products Section ================= -->
-<h2 class="mt-4">Custom PC Builds</h2>
+<h2 class="mt-5 text-success">Custom PC Builds</h2>
+<p class="text-muted">Complete gaming PC builds assembled from the above components.</p>
 
 <form th:action="@{/mainscreen}" method="get" class="row g-2 mb-3">
     <div class="col-auto">
-        <input type="text" class="form-control" placeholder="Filter builds..." name="productkeyword" th:value="${productkeyword}">
+        <input type="text" class="form-control" placeholder="Search builds..." name="productkeyword" th:value="${productkeyword}">
     </div>
     <div class="col-auto">
         <button type="submit" class="btn btn-primary">Search</button>
@@ -61,14 +66,21 @@
     </div>
 </form>
 
-<!-- ✅ Add PC Build button -->
-<a class="btn btn-primary mb-3" th:href="@{/showFormForAddProduct}">Add PC Build</a>
+<a class="btn btn-success mb-3" th:href="@{/showFormForAddProduct}">+ Add New PC Build</a>
 
-<table class="table table-bordered">
-    <thead>
+<!-- 🔹 Show success / error messages -->
+<div th:if="${successMessage}" class="alert alert-success">
+    <span th:text="${successMessage}"></span>
+</div>
+<div th:if="${errorMessage}" class="alert alert-danger">
+    <span th:text="${errorMessage}"></span>
+</div>
+
+<table class="table table-striped table-hover">
+    <thead class="table-dark">
     <tr>
         <th>Build Name</th>
-        <th>Price</th>
+        <th>Price ($)</th>
         <th>Inventory</th>
         <th>Action</th>
     </tr>
@@ -76,15 +88,19 @@
     <tbody>
     <tr th:each="product : ${products}">
         <td th:text="${product.name}"></td>
-        <td th:text="${product.price}"></td>
+        <td th:text="${#numbers.formatDecimal(product.price, 1, 'COMMA', 2, 'POINT')}"></td>
         <td th:text="${product.inv}"></td>
         <td>
             <a th:href="@{'/showFormForUpdateProduct/' + ${product.id}}" class="btn btn-sm btn-primary">Update</a>
             <a th:href="@{'/deleteProduct/' + ${product.id}}" class="btn btn-sm btn-danger">Delete</a>
-            <form th:action="@{/buyproduct}" method="post" style="display:inline;">
-                <input type="hidden" name="productID" th:value="${product.id}"/>
-                <button type="submit" class="btn btn-sm btn-success">Buy Now</button>
-            </form>
+
+            <!-- ✅ Buy Now button -->
+            <a th:if="${product.inv > 0}"
+               th:href="@{'/buyNow/' + ${product.id}}"
+               class="btn btn-sm btn-success">Buy Now</a>
+            <button th:if="${product.inv == 0}"
+                    class="btn btn-sm btn-secondary"
+                    disabled>Out of Stock</button>
         </td>
     </tr>
     </tbody>
