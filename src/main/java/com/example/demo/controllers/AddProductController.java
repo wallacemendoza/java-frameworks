@@ -65,6 +65,25 @@ public class AddProductController {
         return "redirect:/mainscreen";
     }
 
+    // ✅ Buy Now functionality
+    @GetMapping("/buyNow/{id}")
+    public String buyNow(@PathVariable("id") long id, Model model) {
+        Product product = productService.findById((int) id);
+
+        if (product != null) {
+            if (product.getInv() > 0) {
+                product.setInv(product.getInv() - 1); // decrease inventory
+                productService.save(product);
+                model.addAttribute("successMessage", product.getName() + " purchased successfully!");
+            } else {
+                model.addAttribute("errorMessage", "Product is out of stock!");
+            }
+        }
+
+        return "redirect:/mainscreen";
+    }
+
+
     // ✅ Show Update Product form
     @GetMapping("/showFormForUpdateProduct/{id}")
     public String showFormForUpdateProduct(@PathVariable("id") long id, Model model) {
