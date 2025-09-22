@@ -65,7 +65,7 @@ public class AddProductController {
         return "redirect:/mainscreen";
     }
 
-    // ✅ Buy Now functionality
+    // ✅ Buy Now functionality with confirmation page
     @GetMapping("/buyNow/{id}")
     public String buyNow(@PathVariable("id") long id, Model model) {
         Product product = productService.findById((int) id);
@@ -78,11 +78,13 @@ public class AddProductController {
             } else {
                 model.addAttribute("errorMessage", "Product is out of stock!");
             }
+            model.addAttribute("product", product);
+        } else {
+            model.addAttribute("errorMessage", "Product not found!");
         }
 
-        return "redirect:/mainscreen";
+        return "buyNowConfirmation"; // ✅ points to new template
     }
-
 
     // ✅ Show Update Product form
     @GetMapping("/showFormForUpdateProduct/{id}")
