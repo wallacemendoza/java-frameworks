@@ -1,26 +1,113 @@
-<strong>** DO NOT DISTRIBUTE OR PUBLICLY POST SOLUTIONS TO THESE LABS. MAKE ALL FORKS OF THIS REPOSITORY WITH SOLUTION CODE PRIVATE. PLEASE REFER TO THE STUDENT CODE OF CONDUCT AND ETHICAL EXPECTATIONS FOR COLLEGE OF INFORMATION TECHNOLOGY STUDENTS FOR SPECIFICS. ** </strong>
+# `INVENTORY_MGMT_SYS`
 
-# WESTERN GOVERNORS UNIVERSITY 
-## D287 – JAVA FRAMEWORKS
-Welcome to Java Frameworks! This is an opportunity for students to implement user interfaces and learn to leverage existing frameworks, assets, and content for object-oriented programming.
-FOR SPECIFIC TASK INSTRUCTIONS AND REQUIREMENTS FOR THIS ASSESSMENT, PLEASE REFER TO THE COURSE PAGE.
-## BASIC INSTRUCTIONS
-For this project, you will use the Integrated Development Environment (IDE) link in the web links section of this assessment to install the IDE, IntelliJ IDEA (Ultimate Edition). All relevant links are on the course page. Please refer to the course of study for specific links. You will sign up for a free student license using your WGU.edu email address. Please see the “IntelliJ Ultimate Edition Instructions” attachment for instructions on how do this. Next you will download the “Inventory Management Application Template Code” provided in the web links section and open it in IntelliJ IDEA (Ultimate Edition). You will upload this project to a private external GitLab repository and backup regularly. As a part of this, you have been provided with a base code (starting point). 
+```ascii
+╔═══════════════════════════════════════════════════════════════╗
+║                    BASE TEMPLATE BRANCH                        ║
+╚═══════════════════════════════════════════════════════════════╝
+```
 
-## SUPPLEMENTAL RESOURCES  
-1.	How to clone a project to IntelliJ using Git?
+<div align="center">
 
-> Ensure that you have Git installed on your system and that IntelliJ is installed using [Toolbox](https://www.jetbrains.com/toolbox-app/). Make sure that you are using version 2022.3.2. Once this has been confirmed, click the clone button and use the 'IntelliJ IDEA (HTTPS)' button. This will open IntelliJ with a prompt to clone the proejct. Save it in a safe location for the directory and press clone. IntelliJ will prompt you for your credentials. Enter in your WGU Credentials and the project will be cloned onto your local machine.  
+![Java](https://img.shields.io/badge/JAVA-82.5%25-FF6B35?style=for-the-badge&logo=openjdk&logoColor=white)
+![Spring](https://img.shields.io/badge/SPRING_BOOT-6DB33F?style=for-the-badge&logo=springboot&logoColor=white)
 
-2. How to create a branch and start Development?
+### ⚡ Enterprise Inventory Management System ⚡
 
-- GitLab method
-> Press the '+' button located near your branch name. In the dropdown list, press the 'New branch' button. This will allow you to create a name for your branch. Once the branch has been named, you can select 'Create Branch' to push the branch to your repository.
+**`SPRING_BOOT`** × **`THYMELEAF`** × **`JPA`** × **`H2_DB`**
 
-- IntelliJ method
-> In IntelliJ, Go to the 'Git' button on the top toolbar. Select the new branch option and create a name for the branch. Make sure checkout branch is selected and press create. You can now add a commit message and push the new branch to the local repo.
+</div>
 
-## SUPPORT
-If you need additional support, please navigate to the course page and reach out to your course instructor.
-## FUTURE USE
-Take this opportunity to create or add to a simple resume portfolio to highlight and showcase your work for future use in career search, experience, and education!
+---
+
+## 🎯 `STATUS: STARTER_TEMPLATE`
+
+This branch contains the **base project scaffold** — starter code for building an enterprise-grade inventory management system.
+
+```yaml
+current_branch: "main"
+status: "template"
+completeness: "~15%"
+purpose: "Starting point / Reference code"
+```
+
+---
+
+## 🚀 `VIEW_COMPLETE_IMPLEMENTATION`
+
+### **For the production-ready, fully-implemented system:**
+
+### 👉 **[Switch to `working` branch](https://github.com/wallacemendoza/java-frameworks/tree/working)** 👈
+
+```bash
+git checkout working
+```
+
+### What's in `working`:
+
+```diff
++ Full inventory management CRUD
++ Custom PC Builder business logic
++ Min/Max inventory validation
++ Buy Now purchase workflow
++ About page & UI customization
++ Sample data bootstrap (5 parts + 1 product)
++ Complete unit test suite
++ Custom validators (4 total)
++ 15 professional commits
++ Production-ready architecture
+```
+
+---
+
+## 📦 `MAIN_BRANCH_CONTENTS`
+
+This branch includes:
+- ✓ Basic Spring Boot project structure
+- ✓ Maven configuration (pom.xml)
+- ✓ Entity scaffolding (Part, Product)
+- ✓ Repository interfaces
+- ✓ Minimal Thymeleaf templates
+- ⚠️ **No custom features implemented**
+- ⚠️ **No validation logic**
+- ⚠️ **No sample data**
+
+---
+
+## 🛠️ `QUICK_START`
+
+```bash
+# Clone repository
+git clone <repo-url>
+cd java-frameworks
+
+# Switch to implementation branch
+git checkout working
+
+# Run the app
+./mvnw spring-boot:run
+```
+
+Access at `http://localhost:8080`
+
+---
+
+## 🎓 `ACADEMIC_PROJECT`
+
+Template for learning enterprise Java frameworks including:
+- Spring Boot & Spring MVC
+- Thymeleaf server-side rendering
+- JPA/Hibernate ORM
+- Bean validation patterns
+- Repository & Service layers
+
+**For the complete implementation, use the `working` branch.**
+
+---
+
+<div align="center">
+
+### **[⚡ GO TO WORKING BRANCH ⚡](https://github.com/wallacemendoza/java-frameworks/tree/working)**
+
+`main` = Template • `working` = Production
+
+</div>
